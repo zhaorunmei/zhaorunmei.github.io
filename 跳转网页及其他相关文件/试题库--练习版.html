@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>题库问答</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+		<style>
+			body {
+				font-family: 'Inter', sans-serif;
+				background-color: #f4f4f4;
+				margin: 0;
+				padding: 2rem;
+			}
+
+			h1 {
+				text-align: center;
+				color: #333;
+				/* 增大字体大小，使用 !important 确保生效 */
+				font-size: 50px !important;
+				margin-bottom: 2rem;
+				letter-spacing: 0.05em;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+				/* 添加动画效果 */
+				animation: colorChange 3s infinite alternate;
+			}
+
+			@keyframes colorChange {
+				0% {
+					color: #007BFF;
+				}
+
+				100% {
+					color: #22c55e;
+				}
+			}
+
+			.question-section {
+				background-color: #fff;
+				border-radius: 0.75rem;
+				box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+				padding: 2rem;
+				margin-bottom: 2rem;
+				transition: transform 0.3s ease;
+			}
+
+			.question-section:hover {
+				transform: scale(1.02);
+			}
+
+			.question {
+				font-weight: 600;
+				font-size: 1.25rem;
+				margin-bottom: 1.5rem;
+			}
+
+			.answer {
+				color: #007BFF;
+				margin-bottom: 2rem;
+			}
+
+			.options {
+				margin-bottom: 1.5rem;
+			}
+
+			.option {
+				margin-bottom: 1rem;
+				display: flex;
+				align-items: center;
+			}
+
+			.option input[type="radio"],
+			.option input[type="checkbox"] {
+				margin-right: 0.75rem;
+			}
+
+			.result {
+				margin-top: 1.5rem;
+				font-weight: 500;
+			}
+
+			.correct {
+				color: #22c55e;
+			}
+
+			.wrong {
+				color: #ef4444;
+			}
+
+			button {
+				background-color: #007BFF;
+				color: white;
+				padding: 0.75rem 1.5rem;
+				border: none;
+				border-radius: 0.5rem;
+				cursor: pointer;
+				transition: background-color 0.3s ease, transform 0.3s ease;
+				font-size: 1rem;
+				font-weight: 500;
+			}
+
+			button:hover {
+				background-color: #0056b3;
+				transform: scale(1.05);
+			}
+
+			.wrong button {
+				display: block;
+				margin-top: 0.5rem;
+			}
+
+			.wrong .explanation {
+				display: block;
+				margin-top: 0.3rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="">
+			<h1>题库问答</h1>
+		</div>
+		<div id="question-container">
+			<!-- 题目将动态添加到这里 -->
+		</div>
+		<script>
+			const questions = [{
+					type: '单选题',
+					question: '以下哪项不属于网络管理的基本功能？',
+					options: ['A. 配置管理', 'B. 故障管理', 'C. 数据加密', 'D. 性能管理'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '网络管理系统中，用于收集网络设备状态信息的协议通常是（ ）。',
+					options: ['A. HTTP', 'B. FTP', 'C. SNMP', 'D. SMTP'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '网络管理的目标不包括（ ）。',
+					options: ['A. 提高网络性能', 'B. 增加网络流量', 'C. 确保网络可用性', 'D. 保障网络安全'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在网络管理中，对网络拓扑结构进行管理属于（ ）功能。',
+					options: ['A. 配置管理', 'B. 性能管理', 'C. 安全管理', 'D. 计费管理'],
+					answer: 'A',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '简单网络管理协议（SNMP）主要工作在哪一层？',
+					options: ['A. 应用层', 'B. 传输层', 'C. 网络层', 'D. 数据链路层'],
+					answer: 'A',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '以下哪种网络管理协议常用于电信网络管理，具有丰富的管理功能和强大的扩展性？',
+					options: ['A. SNMP', 'B. CMIP', 'C. LMMP', 'D. FTP'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: 'SNMP 中，代理向管理站主动发送的消息称为？',
+					options: ['A. GetRequest', 'B. SetRequest', 'C. Trap', 'D. Response'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '下列关于 RMON（远程网络监控）协议的说法，错误的是？',
+					options: ['A. RMON 可以对网络进行远程监控和管理', 'B. RMON 只能监控交换机', 'C. RMON MIB 定义了远程监控的管理信息库', 'D. RMON 能提高网络管理的效率'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在虚拟机中安装操作系统前，首先需要进行的操作是（ ）。',
+					options: ['A. 分配虚拟机内存', 'B. 下载操作系统镜像文件', 'C. 设置虚拟机网络模式', 'D. 安装虚拟机软件'],
+					answer: 'D',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '以下哪种虚拟机软件常用于在 Windows 系统上安装虚拟机？',
+					options: ['A. VMware Workstation', 'B. Xen', 'C. KVM', 'D. Hyper - V'],
+					answer: 'A',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在虚拟机中安装 Windows 系统时，选择分区的操作在安装过程的哪一步骤进行？',
+					options: ['A. 输入产品密钥后', 'B. 选择安装类型时', 'C. 加载驱动程序后', 'D. 语言和时间设置后'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '虚拟机安装系统完成后，发现无法上网，最有可能需要安装的是（ ）。',
+					options: ['A. 虚拟机工具', 'B. 杀毒软件', 'C. 防火墙软件', 'D. 办公软件'],
+					answer: 'A',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '当误删除文件后，以下哪种工具最常用于文件恢复？',
+					options: ['A. WinRAR', 'B. 360 安全卫士', 'C. Recuva', 'D. 迅雷'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '文件恢复的原理主要基于（ ）。',
+					options: ['A. 重新生成丢失的文件内容', 'B. 利用文件系统中保留的文件索引信息', 'C. 从备份文件中复制', 'D. 向磁盘写入新数据覆盖原数据'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '以下哪种情况会降低文件恢复成功的概率？',
+					options: ['A. 误删除文件后立即进行恢复操作', 'B. 在误删除文件的磁盘分区上频繁写入新数据', 'C. 使用专业的文件恢复软件', 'D. 原文件存储在固态硬盘中'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '以下哪种加密算法常用于文件加密，以保障数据安全性？',
+					options: ['A. MD5', 'B. SHA - 1', 'C. AES', 'D. DES'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '要对单个重要文件进行加密，在 Windows 系统中，以下哪种工具较为合适？',
+					options: ['A. 系统自带的 BitLocker', 'B. WinRAR', 'C. 腾讯电脑管家', 'D. 鲁大师'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '对文件进行加密后，以下说法正确的是（ ）。',
+					options: ['A. 文件的大小会显著增大', 'B. 文件在未解密时无法被读取或修改', 'C. 加密后的文件不能再被复制', 'D. 加密后的文件只能在加密时使用的电脑上打开'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在进行系统备份时，若只想备份上次备份后发生变化的数据，应选择以下哪种备份类型？',
+					options: ['A. 完全备份', 'B. 差异备份', 'C. 增量备份', 'D. 副本备份'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '系统恢复过程中，如果选择从镜像文件恢复系统，以下哪个操作是必须提前准备的？',
+					options: ['A. 连接打印机', 'B. 准备可引导的介质（如 U 盘启动盘）', 'C. 安装最新的显卡驱动', 'D. 卸载所有第三方软件'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在 Windows 系统中，常用于实现远程桌面连接的工具是（ ）。',
+					options: ['A. Telnet', 'B. SSH', 'C. Remote Desktop Connection', 'D. FTP'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '为保障远程管理的安全，以下做法错误的是（ ）。',
+					options: ['A. 设置复杂的登录密码并定期更换', 'B. 开启防火墙并设置允许特定的远程管理端口', 'C. 随意接受来自未知来源的远程管理请求', 'D. 定期更新远程管理软件版本'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在域环境中，负责集中管理用户账户和权限的组件是（ ）。',
+					options: ['A. 域控制器', 'B. 成员服务器', 'C. 工作站', 'D. 打印机服务器'],
+					answer: 'A',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '搭建域服务器时，以下哪项是必须满足的条件？',
+					options: ['A. 服务器必须安装 Windows 10 操作系统', 'B. 服务器需要有独立的公网 IP 地址', 'C. 服务器硬盘空间至少 1TB', 'D. 服务器需要配置静态 IP 地址'],
+					answer: 'D',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '首次对交换机进行配置时，通常使用以下哪种方式连接交换机？',
+					options: ['A. 无线连接', 'B. 通过 Telnet 远程连接', 'C. 使用 Console 线连接到计算机的串口或 USB 转串口', 'D. 通过 SSH 远程连接'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在交换机配置中，用于进入全局配置模式的命令是（ ）。',
+					options: ['A. enable', 'B. configure terminal', 'C. interface', 'D. line vty 0 4'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '要将交换机的某个端口设置为 Access 模式，并划分到 VLAN 10，正确的命令是（ ）',
+					options: ['A. switchport mode access vlan 10', 'B. switchport access vlan 10', 'C. switchport mode trunk vlan 10',
+						'D. switchport trunk native vlan 10'
+					],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在交换机上创建 VLAN 20 的正确命令是（ ）',
+					options: ['A. vlan 20 create', 'B. create vlan 20', 'C. vlan 20', 'D. new vlan 20'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '要将交换机的端口 FastEthernet 0/1 划分到已创建的 VLAN 15 中，在端口配置模式下应使用的命令是（ ）',
+					options: ['A. switchport access vlan 15', 'B. vlan 15 assign FastEthernet 0/1',
+						'C. vlan 15 assign FastEthernet 0/2', 'D. FastEthernet 0/1 vlan 15'
+					],
+					answer: 'A',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '不同 VLAN 之间进行通信，需要借助以下哪种设备？',
+					options: ['A. 二层交换机', 'B. 集线器', 'C. 路由器', 'D. 网卡'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: 'STP 协议的主要作用是（ ）',
+					options: ['A. 提高网络传输速度', 'B. 防止网络中出现环路', 'C. 进行 VLAN 划分', 'D. 实现端口聚合'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在 STP 中，处于以下哪种状态的端口不会转发数据，但会接收并处理 BPDU（桥协议数据单元）？',
+					options: ['A. 阻塞（Blocking）', 'B. 监听（Listening）', 'C. 学习（Learning）', 'D. 转发（Forwarding）'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '交换机上，修改 STP 优先级的命令是（ ）',
+					options: ['A. spanning - tree priority [优先级值]', 'B. stp priority [优先级值]', 'C. priority spanning - tree [优先级值]',
+						'D. tree - spanning priority [优先级值]'
+					],
+					answer: 'A',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '链路聚合的主要目的是（ ）',
+					options: ['A. 增加网络的可靠性和带宽', 'B. 划分 VLAN', 'C. 实现 IP 地址分配', 'D. 提升交换机的安全性能'],
+					answer: 'A',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在交换机上配置链路聚合时，将多个端口加入聚合组的命令是（ ）',
+					options: ['A. interface aggregate - port [聚合组号]', 'B. port - group [聚合组号]',
+						'C. aggregate - port [聚合组号] mode [模式]', 'D. port link - type trunk'
+					],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '以下关于链路聚合模式的说法，正确的是（ ）',
+					options: ['A. 静态聚合模式下，交换机不能自动检测链路状态', 'B. 动态聚合模式下，所有端口都必须手动配置', 'C. 静态聚合模式比动态聚合模式更灵活',
+						'D. 动态聚合模式下，交换机通过 LACP 协议协商链路聚合'
+					],
+					answer: 'D',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '路由器的默认网关设置主要用于（ ）',
+					options: ['A. 连接到局域网', 'B. 转发数据包到其他网络', 'C. 配置路由器的管理 IP', 'D. 提高网络传输速度'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在路由器基础配置中，设置 enable 密码的主要目的是（ ）',
+					options: ['A. 防止非法用户登录路由器管理界面', 'B. 用于路由器之间的认证', 'C. 加密传输的数据', 'D. 提高网络访问速度'],
+					answer: 'A',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '路由器远程登录时，最常用的安全协议是（ ）',
+					options: ['A. Telnet', 'B. HTTP', 'C. SSH', 'D. FTP'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '要在路由器上配置允许远程登录，以下哪项操作是必须的（ ）',
+					options: ['A. 配置路由器的 IP 地址池', 'B. 开启 HTTP 服务', 'C. 设置 VTY 线路密码', 'D. 配置静态路由'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在路由器实现 VLAN 间路由时，以下哪种方式效率较高且配置相对简便？（ ）',
+					options: ['A. 传统的单臂路由', 'B. 采用子接口的单臂路由', 'C. 三层交换机的 SVI 接口路由', 'D. 通过路由器的物理接口直连不同 VLAN'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在路由器的 RIP 配置中，RIP 协议默认的路由更新周期是多少秒？（ ）',
+					options: ['A. 10', 'B. 20', 'C. 30', 'D. 60'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在 OSPF 配置中，以下关于 Router ID 的描述正确的是（ ）',
+					options: ['A. 必须手动配置，否则 OSPF 无法运行', 'B. 若未手动配置，会自动选取路由器上最大的物理接口 IP 地址作为 Router ID',
+						'C. 若未手动配置，会自动选取路由器上最大的环回接口 IP 地址作为 Router ID，若没有环回接口，则选取最大的物理接口 IP 地址',
+						'D. 若未手动配置，会自动选取路由器上最大的环回接口 IP 地址作为 Router ID，若没有环回接口，则选取最大的物理接口 IP 地址'
+					],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在配置 IPv6 路由器时，若要为接口配置全球单播地址，以下哪种表示形式是正确的？（ ）',
+					options: ['A. 2001:db8::1/64', 'B. fe80::1/64', 'C. ff02::1/64', 'D. 192.168.1.1/24'],
+					answer: 'A',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '以下关于标准访问控制列表的说法，正确的是（ ）',
+					options: ['A. 标准访问控制列表基于源 IP 地址和目的 IP 地址来过滤数据包', 'B. 标准访问控制列表的编号范围是 1 - 99 和 1300 - 1999', 'C. 标准访问控制列表只能应用在入方向',
+						'D. 标准访问控制列表可以过滤 TCP 和 UDP 端口'
+					],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在路由器的 NAT 配置中，以下哪种 NAT 类型可以实现多个内部私有 IP 地址映射到同一个公网 IP 地址的不同端口？',
+					options: ['A. 静态 NAT', 'B. 动态 NAT', 'C. PAT（端口地址转换）', 'D. 一对一 NAT'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在路由器上配置 IPsec VPN 时，以下哪一项是建立安全连接的关键步骤？',
+					options: ['A. 配置 NAT 以隐藏内部网络地址', 'B. 定义感兴趣流来确定需要保护的数据流量', 'C. 设置 DHCP 服务器为 VPN 客户端分配 IP 地址',
+						'D. 开启路由器的 HTTP 服务以便远程管理'
+					],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在路由器 PPP 认证中，CHAP 认证与 PAP 认证相比，优势在于（ ）',
+					options: ['A. CHAP 认证配置更简单', 'B. CHAP 认证使用明文传输密码', 'C. CHAP 认证采用三次握手，安全性更高', 'D. CHAP 认证支持更多的设备类型'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '以下哪种技术用于加密网络传输数据，防止数据被窃取或篡改？',
+					options: ['A. 防火墙', 'B. VPN（虚拟专用网络）', 'C. IDS（入侵检测系统）', 'D. 反病毒软件'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '下列关于网络安全的描述，正确的是（ ）',
+					options: ['A. 安装了杀毒软件就可以保证网络安全', 'B. 网络安全仅涉及到计算机硬件的安全', 'C. 弱密码不会对网络安全造成威胁', 'D. 定期更新系统和软件有助于提升网络安全性'],
+					answer: 'D',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在网络安全中，防火墙的主要作用是（ ）',
+					options: ['A. 查杀计算机病毒', 'B. 防止外部网络对内部网络的非法访问', 'C. 加密内部网络传输的数据', 'D. 修复系统漏洞'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '攻击者通过发送大量请求，耗尽目标服务器资源，使其无法正常提供服务，这种攻击方式被称为（ ）',
+					options: ['A. SQL 注入攻击', 'B. 跨站脚本攻击（XSS）', 'C. DDoS 攻击（分布式拒绝服务攻击）', 'D. 中间人攻击'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '以下哪种网络攻击手段利用了操作系统或软件中的漏洞来获取未授权访问权限？',
+					options: ['A. 暴力破解', 'B. 缓冲区溢出攻击', 'C. 钓鱼攻击', 'D. 端口扫描'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '在网络攻击中，攻击者冒充合法用户发送恶意请求，这种攻击属于（ ）',
+					options: ['A. 重放攻击', 'B. 口令猜测攻击', 'C. 伪造攻击', 'D. 拒绝服务攻击'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '以下哪种技术可以实时监测网络流量，发现并阻止入侵行为？',
+					options: ['A. 防火墙', 'B. 入侵检测系统（IDS）', 'C. 入侵防御系统（IPS）', 'D. 虚拟专用网络（VPN）'],
+					answer: 'C',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '为防止数据丢失，定期对重要数据进行备份，并将备份数据存储在远离主数据中心的地方，这属于以下哪种网络防御策略？',
+					options: ['A. 数据加密', 'B. 数据恢复', 'C. 数据冗余', 'D. 灾难恢复'],
+					answer: 'D',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '网络管理员通过设置复杂的访问控制策略，限制不同用户对网络资源的访问权限，这是为了防范以下哪种安全威胁？',
+					options: ['A. 恶意软件攻击', 'B. 内部人员违规操作', 'C. 网络钓鱼攻击', 'D. 拒绝服务攻击'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '目前，安全性相对较高的无线网络加密协议是（ ）',
+					options: ['A. WEP', 'B. WPA', 'C. WPA2', 'D. WPA3'],
+					answer: 'D',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '攻击者通过创建与合法无线网络名称相同的虚假网络，诱使用户连接并窃取信息，这种攻击方式被称为（ ）',
+					options: ['A. 暴力破解', 'B. 无线钓鱼', 'C. 中间人攻击', 'D. 拒绝服务攻击'],
+					answer: 'B',
+					explanation: '无'
+				},
+				{
+					type: '单选题',
+					question: '为提高无线网络安全性，以下做法错误的是（ ）',
+					options: ['A. 定期更改无线网络密码', 'B. 启用 WPS 功能', 'C. 隐藏无线网络 SSID', 'D. 限制连接设备数量'],
+					answer: 'B',
+					explanation: '无'
+				},
+				//多选题
+				{
+					type: '多选题',
+					question: '以下哪些是网络管理的基本功能？',
+					options: ['A. 监测网络性能', 'B. 灾难恢复', 'C. 数据备份', 'D. 网络安全管理'],
+					answer: 'ABD',
+					explanation: '无'
+				},
+				{
+					type: '多选题',
+					question: '下列哪些协议属于网络管理协议？',
+					options: ['A. SNMP', 'B. RMON', 'C. HTTP', 'D. SSH'],
+					answer: 'ABD',
+					explanation: '无'
+				},
+				{
+					type: '多选题',
+					question: '在虚拟机中安装操作系统需要哪些步骤？',
+					options: ['A. 创建虚拟机', 'B. 选择安装介质', 'C. 配置虚拟硬件', 'D. 直接运行已有软件'],
+					answer: 'ABC',
+					explanation: '无'
+				},
+				{
+					"type": "多选题",
+					"question": "以下哪些方法可以用于文件加密？",
+					"options": ["A. 对称加密", "B. 非对称加密", "C. 哈希加密", "D. 压缩文件"],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "系统备份可以包括哪些内容？",
+					"options": ["A. 操作系统", "B. 用户数据", "C. 应用程序", "D. 垃圾文件"],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "下列哪些是文件恢复的常见工具？",
+					"options": ["A. 数据恢复软件", "B. 防病毒软件", "C. 磁盘清理工具", "D. RAID 阵列"],
+					"answer": "AD",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "以下哪些是远程管理的常用工具？",
+					"options": ["A. RDP", "B. SSH", "C. FTP", "D. VNC"],
+					"answer": "ABD",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "域服务器的核心功能包括哪些？",
+					"options": ["A. 用户身份验证", "B. 网络打印管理", "C. 中央化的目录服务", "D. 备份数据管理"],
+					"answer": "AC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "远程管理可以用于哪些场景？",
+					"options": ["A. 服务器配置", "B. 软件安装和更新", "C. 数据恢复", "D. 系统监控"],
+					"answer": "ABD",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "以下哪些是交换机的基本配置步骤？",
+					"options": ["A. 设置主机名", "B. 配置管理 IP 地址", "C. 启用 VLAN", "D. 保存配置"],
+					"answer": "ABD",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "VLAN 的主要优点包括哪些？",
+					"options": ["A. 增强网络安全性", "B. 降低广播风暴", "C. 提高网络性能", "D. 使网络管理更加复杂"],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "STP 的主要角色包括哪些？",
+					"options": ["A. 根桥", "B. 设计桥", "C. 端口状态管理", "D. 数据加密"],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "在配置路由器时，以下哪些是基本步骤？",
+					"options": ["A. 设置主机名", "B. 配置 IP 地址", "C. 启用路由协议", "D. 设置 ACL（访问控制列表）"],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "对于远程登录路由器，以下哪些方法是常用的？",
+					"options": ["A. SSH（安全外壳协议）", "B. Telnet", "C. SNMP（简单网络管理协议）", "D. HTTP（超文本传输协议）"],
+					"answer": "AB",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "在 VLAN 间进行路由时，以下哪些设备可以用于实现？",
+					"options": ["A. 路由器", "B. 三层交换机", "C. 二层交换机", "D. 防火墙"],
+					"answer": "AB",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "在配置 RIP 时，以下哪些命令是正确的？",
+					"options": ["A. router rip", "B. network [network_address]",
+						"C. ip route [destination_network] [mask] [next_hop]", "D. version 2"
+					],
+					"answer": "ABD",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "配置 OSPF 时，以下哪些命令是必要的？",
+					"options": ["A. router ospf [process_id]", "B. network [ip_address] [wildcard_mask] area [area_id]",
+						"C. area [area_id] range [ip_address] [subnet_mask]", "D. ip ospf [process_id] cost [value]"
+					],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "关于 IPv6 网络地址的以下哪些描述是正确的？",
+					"options": ["A. IPv6 地址是 128 位的", "B. IPv6 可以使用简写形式", "C. IPv6 地址字节用十进制表示", "D. IPv6 提供无状态地址自动配置（SLAAC）"],
+					"answer": "ABD",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "配置访问控制列表（ACL）时，以下哪些命令是用于过滤流量的？",
+					"options": ["A. permit ip [source] [wildcard] [destination] [wildcard]",
+						"B. deny tcp [source] [wildcard] [destination] [wildcard] eq [port_number]",
+						"C. access - list [acl_number] deny [protocol] [source] [wildcard]", "D. filter [source] [destination]"
+					],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "在配置 RIP 时，关于 RIP 版本的以下陈述哪些是正确的？",
+					"options": ["A. RIP 版本 1 不支持 VLSM", "B. RIP 版本 2 需要使用 network [network_address] 命令来启用", "C. RIP 版本 2 支持认证和多播",
+						"D. RIP 版本 3 已被广泛接受并取代 RIP 版本 2"
+					],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "关于 NAT 的以下说法，哪些是正确的？",
+					"options": ["A. NAT 可以将私有 IP 地址转换为公共 IP 地址", "B. NAT 可以增强网络的安全性", "C. NAT 会影响网络性能，但可以无损配置",
+						"D. NAT 只适用于 IPv4 地址，不支持 IPv6"
+					],
+					"answer": "ABD",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "以下哪些是常用的 VPN 协议？",
+					"options": ["A. PPTP（点对点隧道协议）", "B. L2TP（第二层隧道协议）", "C. IPSec（Internet 协议安全）", "D. HTTP（超文本传输协议）"],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "在 PPP 协议中，以下哪些认证方法是可用的？",
+					"options": ["A. PAP（密码认证协议）", "B. CHAP（挑战握手认证协议）", "C. EAP（可扩展认证协议）", "D. TLS（传输层安全）"],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "关于 VPN 的优势，以下哪些描述是正确的？",
+					"options": ["A. VPN 可以加密数据，提高数据传输的安全性", "B. VPN 可以使用户绕过地理限制，访问被屏蔽内容", "C. VPN 只能通过专用线路连接，不能通过公共网络",
+						"D. VPN 允许远程用户安全地访问公司内部网络"
+					],
+					"answer": "ABD",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "关于 NAT 类型，以下哪些描述是正确的？",
+					"options": ["A. 静态 NAT 用于将一个私有 IP 地址映射到一个公共 IP 地址", "B. 动态 NAT 可以在多个私有 IP 地址和公共 IP 地址池之间进行映射",
+						"C. PAT（端口地址转换）可以将多个私有 IP 地址映射到一个公共 IP 地址的不同端口", "D. NAT 无法支持 VoIP 等实时应用"
+					],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "关于网络安全的基本原则，以下哪些描述是正确的？",
+					"options": ["A. 机密性保证只有授权用户才能访问敏感信息", "B. 完整性确保数据在传输和存储过程中未被篡改", "C. 可用性意味着系统、网络和数据可被合法用户可靠地访问",
+						"D. 可靠性与用户的满意度无关"
+					],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "以下哪些是常见的网络攻击方式？",
+					"options": ["A. 拒绝服务攻击（DoS）", "B. 中间人攻击（MITM）", "C. 木马病毒", "D. 防火墙配置"],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "关于防御网络攻击的方法，以下哪些措施是有效的？",
+					"options": ["A. 使用防火墙进行网络流量过滤", "B. 定期更新和打补丁以修复系统漏洞", "C. 授权访问控制，确保仅允许必要人员访问敏感数据", "D. 提供通用密码给所有用户，以简化访问"],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "在无线网络安全中，以下哪些技术可以提高网络的安全性？",
+					"options": ["A. WEP", "B. WPA", "C. WPA2", "D. 使用开放式 SSID"],
+					"answer": "BC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "关于社会工程学攻击，以下哪些说法是正确的？",
+					"options": ["A. 社会工程学攻击主要依赖于技术手段获取信息", "B. 攻击者可以通过伪装成可信任的用户或机构来实施攻击", "C. 在线钓鱼邮件是一种常见的社会工程学攻击方式",
+						"D. 社会工程学攻击不需要任何心理操控技术。"
+					],
+					"answer": "BC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "在路由器基本配置中，以下哪些命令是必要的？",
+					"options": ["A. hostname [router_name]", "B. enable password [password]", "C. interface [interface_id]",
+						"D. ip address [ip_address] [subnet_mask]"
+					],
+					"answer": "ABD",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "配置 VLAN 时，以下哪些步骤是必需的？",
+					"options": ["A. 创建 VLAN 并分配 ID", "B. 将接口添加到 VLAN", "C. 配置 VLAN 间路由接口", "D. 配置静态路由"],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "关于访问控制列表（ACL），以下哪些是正确的描述？",
+					"options": ["A. ACL 可以限制对特定 IP 地址的访问", "B. ACL 有隐式拒绝规则，这意味未被特定允许的流量默认被拒绝", "C. ACL 只能应用于出站流量",
+						"D. ACL 可用于允许或拒绝特定的协议"
+					],
+					"answer": "ABD",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "关于 VPN 的优势，哪些描述是正确的？",
+					"options": ["A. VPN 可以加密数据，防止第三方窃听", "B. VPN 允许远程用户安全访问内部网络", "C. VPN 只能在专用网络中使用，不能在公共网络中配置",
+						"D. VPN 可以提高用户的在线隐私"
+					],
+					"answer": "ABD",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "在交换机的基本配置中，以下哪些命令是必需的？",
+					"options": ["A. hostname [switch_name]", "B. enable secret [password]", "C. interface [interface_id]",
+						"D. ip address [ip_address] [subnet_mask]"
+					],
+					"answer": "AB",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "配置 VLAN 时，以下哪些步骤是必要的？",
+					"options": ["A. 创建 VLAN 并分配 ID", "B. 将交换机端口分配到 VLAN", "C. 配置 VLAN 间路由", "D. 为每个 VLAN 配置 IP 地址"],
+					"answer": "AB",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "关于生成树协议（STP），以下哪些描述是正确的？",
+					"options": ["A. STP 用于防止网络中的环路", "B. STP 选举根桥来管理网络结构", "C. STP 只能适用于 VLAN 配置", "D. STP 可以自动选择最优路径"],
+					"answer": "ABD",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "链路聚合的主要目的是什么？以下哪些描述是正确的？",
+					"options": ["A. 提高带宽", "B. 增强冗余性", "C. 降低延迟", "D. 扩展 VLAN 数量"],
+					"answer": "AB",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "在配置交换机端口时，以下哪些命令是常用的？",
+					"options": ["A. switchport mode access", "B. switchport access vlan [vlan_id]",
+						"C. switchport trunk encapsulation dot1q", "D. ip routing"
+					],
+					"answer": "ABC",
+					"explanation": "无"
+				},
+				{
+					"type": "多选题",
+					"question": "链路聚合的优点包括哪些方面？",
+					"options": ["A. 改善网络性能", "B. 降低对设备的需求", "C. 实现流量负载均衡", "D. 增加配置复杂性"],
+					"answer": "AC",
+					"explanation": "无"
+				},
+				//填空题
+				{
+					type: '填空题',
+					question: 'ISO 定义的网络管理五大功能分别是故障管理、计费管理、____、性能管理和安全管理',
+					answer: '配置管理',
+					explanation: '无'
+				},
+				{
+					type: '填空题',
+					question: '在网络管理中，____管理是对网络中的被管对象进行标识、初始化、控制、鉴别和检测等操作的集合',
+					answer: '配置',
+					explanation: '无'
+				},
+				{
+					type: '填空题',
+					question: '网络管理系统通常由管理者、____和管理协议三部分组成',
+					answer: '被管对象（或代理）',
+					explanation: '无'
+				},
+				{
+					"type": "填空题",
+					"question": " 网络故障管理流程一般包括故障检测、故障隔离、和记录结果等几部分 ",
+					"answer": "故障修复",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": " 简单网络管理协议（SNMP）主要由管理站、和管理信息库（MIB）三部分组成 ",
+					"answer": "代理",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": " 在 SNMP 协议中，用于在管理站和代理之间传输管理信息的协议数据单元是",
+					"answer": "PDU（协议数据单元）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "NETCONF 是一种基于____的网络配置协议，它提供了一种结构化的方式来管理网络设备的配置",
+					"answer": "XML（可扩展标记语言）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "网络管理协议的作用是实现管理站与____之间的信息交互，以完成对网络设备的监测、配置和管理等任务",
+					"answer": "代理（被管对象）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在虚拟机中安装系统前，若选择使用 ISO 镜像文件作为安装介质，需先将其____到虚拟机的虚拟光驱中",
+					"answer": "挂载",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": " 在创建虚拟机实例后，要为其合理分配硬件资源，其中决定虚拟机运行流畅度的关键资源有内存（RAM）和",
+					"answer": "处理器（CPU）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在虚拟机系统安装过程中，对虚拟硬盘进行分区和格式化时，常见的 Windows 系统可选择的文件系统有 NTFS 和____",
+					"answer": "FAT32",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "虚拟机系统安装完成后，为提升虚拟机性能和操作体验，通常需要安装如 VMware Tools 或 VirtualBox Guest Additions 这类____工具",
+					"answer": "增强",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": " 数据恢复操作通常可分为 3 类，分别是全盘恢复、和重定向恢复 ",
+					"answer": "个别文件恢复",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在文件恢复过程中，若要恢复误删除的文件，可借助操作系统自带的______功能，前提是文件未被彻底覆盖",
+					"answer": "回收站",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "当文件因病毒感染而损坏或丢失时，在进行文件恢复前，应先使用可靠的______软件对系统进行全面查杀，防止病毒再次破坏恢复的文件",
+					"answer": "杀毒",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": " 在 Windows 系统中，常用于在 NTFS 卷上实现文件加密功能的是",
+					"answer": "加密文件系统（EFS）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "文件加密按加密算法分类，常见的有对称算法、非对称算法和______",
+					"answer": "不可逆算法",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "若要对传输过程中的文件进行加密，可使用端到端加密技术，实施时需先选择支持该技术的______ ，并在所有参与通信的设备上安装相应软件",
+					"answer": "通信工具",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "系统备份时，将系统中的所有数据都进行复制的方式被称为______备份",
+					"answer": "完全",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在系统恢复时，若要从备份数据中还原指定的某一个或几个文件，这种恢复方式属于______恢复",
+					"answer": "个别文件",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "常见的远程管理协议中，能够为网络设备管理操作提供安全加密传输，且支持多种身份验证方法（如密码、密钥对、证书认证）的是______协议",
+					"answer": "SSH（Secure Shell）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在对服务器进行远程管理时，若要从互联网其他位置安全访问服务器，可通过设置______在公共网络上创建加密隧道，使远程设备如同连接到私有网络",
+					"answer": "虚拟私人网络（VPN）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在 Windows Server 域环境中，域控制器通过____协议进行身份验证，以确保用户能够安全访问域内资源",
+					"answer": "Kerberos",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "当构建一个包含多个域的域林时，第一个被创建的域被称为____域，它在整个域林的架构和信任关系中起着关键作用",
+					"answer": "根",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "首次配置交换机时，一般通过____接口使用配置线缆连接计算机与交换机，进行初始设置",
+					"answer": "Console（控制台）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在交换机命令行界面，要进入全局配置模式，需使用命令____",
+					"answer": "configure terminal",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "为交换机设置一个方便识别和管理的名称，在全局配置模式下应使用命令____，后面紧跟自定义的交换机名称",
+					"answer": "hostname",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在交换机上创建 VLAN 50，在全局配置模式下应使用命令______",
+					"answer": "vlan 50",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "若要将交换机的某个端口设置为 Access 模式，并将其划分到 VLAN 10，应依次执行的命令是 switchport mode access 和______",
+					"answer": "switchport access vlan 10",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在交换机之间连接的 Trunk 链路配置中，允许所有 VLAN 通过的命令是______（假设端口已设置为 Trunk 模式）",
+					"answer": "switchport trunk allowed vlan all",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在 STP 中，根桥是通过比较交换机的______来选举的，值最小的交换机成为根桥",
+					"answer": "网桥 ID（BID）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "STP 中，端口从阻塞状态到侦听状态需要______秒，侦听状态到学习状态需要 15 秒，学习状态到转发状态需要 15 秒",
+					"answer": "20",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "如果要指定某一台交换机为根交换机，在华为交换机中可以通过修改______来实现，默认情况下华为交换机的该值是 32768",
+					"answer": "优先级",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "链路聚合分为手工模式和 LACP 模式，在______模式下，Eth - Trunk 的建立、成员接口的加入由手工配置，没有链路聚合控制协议 LACP 的参与",
+					"answer": "手工",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "一个 Eth - Trunk 接口中的成员接口必须是以太网类型和______相同的接口",
+					"answer": "速率",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在华为交换机中，配置 Eth - Trunk1 基于源 IP 地址与目的 IP 地址进行负载分担的命令是_____",
+					"answer": "（Eth - Trunk1）load - balance src - dst - ip",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "路由器用于连接不同的网络，其主要功能包括路由选择和_____",
+					"answer": "数据包转发",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "要为路由器的某个接口配置 IP 地址，需先进入该接口的配置模式，例如要配置 FastEthernet0/0 接口，应使用命令______",
+					"answer": "interface FastEthernet0/0",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在路由器上配置远程登录时，需要开启 VTY 线路，VTY 线路默认有______条",
+					"answer": "5",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "为了允许远程登录到路由器，需要为 VTY 线路配置______，可以是密码验证或 AAA 认证等方式",
+					"answer": "认证方式",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "实现 VLAN 间路由的方法主要有单臂路由和______，其中后者是利用路由器的物理接口直接连接不同 VLAN，每个接口对应一个 VLAN 网段",
+					"answer": "三层交换机路由",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在路由器 RIP 配置中，宣告网络时，若要宣告 192.168.1.0/24 这个网络，在 RIP 配置模式下应使用命令____",
+					"answer": "network 192.168.1.0",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在配置 OSPF 协议时，为路由器指定区域 ID，若要将路由器划分到骨干区域，应将区域 ID 设置为___",
+					"answer": "0",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "IPv6 地址表示中，双冒号 “::” 在一个地址中最多只能出现____次，用于压缩连续的一段 0",
+					"answer": "1",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "标准访问控制列表是根据数据包的____来过滤数据包的，其访问控制列表号范围是 1 - 99 和 1300 - 1999",
+					"answer": "源 IP 地址",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在 NAT 配置中，将内部本地地址转换为内部全局地址的过程，这种转换类型被称为____",
+					"answer": "动态 NAT",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在 IPsec VPN 配置中，用于协商安全联盟（SA）参数的协议是______",
+					"answer": "IKE",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": " 在 PPP 认证中，认证方式是以明文形式传输用户名和密码的 ",
+					"answer": "PAP",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "常见的网络攻击手段中，通过向目标服务器发送海量请求，导致服务器资源耗尽而瘫痪，这种攻击被称为______攻击",
+					"answer": "拒绝服务（DoS）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": " 网络安全防护体系中，用于检测网络流量中的恶意行为、及时发现入侵迹象并报警的设备或系统称为",
+					"answer": "入侵检测系统（IDS）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "是一种基于数学算法的网络安全技术，通过对数据进行变换，使得未授权者无法理解数据内容，以此保障数据的保密性 ",
+					"answer": "加密技术",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "在网络攻击中，攻击者通过假冒合法用户身份获取敏感信息的攻击方式称为______攻击",
+					"answer": "身份假冒",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "有一种网络攻击利用操作系统或应用程序的漏洞，在用户不知情的情况下将恶意代码植入系统，这种攻击被称为______攻击",
+					"answer": "漏洞利用",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "攻击是指攻击者先通过网络监听等手段获取用户通信中的加密密钥等信息，然后利用这些信息破解加密通信内容的攻击形式 ",
+					"answer": "密码破解",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "防火墙在默认情况下，对于未明确允许的网络流量，会执行______操作，以阻止未经授权的访问",
+					"answer": "拒绝",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": " 定期对系统和应用程序进行，可以修复已知漏洞，有效降低被攻击的风险，这是网络防御的重要措施之一 ",
+					"answer": "更新（或打补丁）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": " 在网络防御体系中，入侵防御系统（IPS）不仅能检测入侵行为，还能在检测到入侵时主动采取措施进行_，阻止攻击的进一步发展 ",
+					"answer": "阻断",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": " 无线网络安全协议中，是一种较早期的协议，由于其加密算法存在安全漏洞，容易被破解，已逐渐被弃用 ",
+					"answer": "WEP（Wired Equivalent Privacy，有线等效保密协议）",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": "为防止无线网络被未经授权的设备接入，应开启无线接入点的______功能，只允许指定 MAC 地址的设备连接到无线网络",
+					"answer": "MAC 地址过滤",
+					"explanation": "无"
+				},
+				{
+					"type": "填空题",
+					"question": " 目前广泛使用且相对安全的无线网络加密协议是，它采用了更强大的加密算法和密钥管理机制，能有效保护无线网络通信安全 ",
+					"answer": "WPA2（Wi - Fi Protected Access 2）",
+					"explanation": "无"
+				},
+				//判断题
+				{
+					type: '判断题',
+					question: '网络管理的主要目标是确保网络的可用性和性能。',
+					answer: '正确',
+					explanation: '无'
+				},
+				{
+					type: '判断题',
+					question: 'SNMP（简单网络管理协议）用于监控和管理网络设备。',
+					answer: '正确',
+					explanation: '无'
+				},
+				{
+					type: '判断题',
+					question: '虚拟机只能在特定操作系统上安装和运行。',
+					answer: '错',
+					explanation: '无'
+				},
+				{
+					type: '判断题',
+					question: '网络管理协议不包括数据安全特性。',
+					answer: '错',
+					explanation: '无'
+				},
+				{
+					"type": "判断题",
+					"question": "文件恢复可以在文件删除后通过专业软件实现。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "文件加密能够保护文件内容不被未授权用户访问。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "定期的系统备份不重要，因为操作系统不会出现问题。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "文件恢复只可以从备份中进行，无法从已删除的位置恢复。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "远程管理可以通过网络远程访问和控制计算机。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "域服务器通常负责管理网络中的用户身份验证和访问控制。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "远程管理工具不需要网络连接。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "域控制器可以与其他服务器共存于同一网络中。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "交换机的基本配置通常包括设置 IP 地址和管理方式。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "VLAN 可以将一个物理网络划分成多个逻辑网络。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "STP 用于防止交换机间的网络回路。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "链路聚合可以增加链路的带宽和冗余性。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "STP 的主要功能是防止由于交换机间环路导致的网络广播风暴。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "在链路聚合中，所有参与聚合的端口必须设置为相同的速度和双工模式。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "一个交换机可以仅通过默认配置正常工作，所有功能均可用",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "VLAN 可以通过静态和动态两种方式进行配置。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "在 STP 中，设计桥负责选择哪个桥作为根桥。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "链路聚合可以提高单链路的带宽，但不能提供冗余性。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "交换机在不同 VLAN 之间的通信需要通过路由器或三层交换机。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "STP 和 RSTP 是完全相同的协议，没有任何区别。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "路由器的基本配置通常包括设置 IP 地址和路由协议。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "可以通过 SSH 或 Telnet 协议远程登录到路由器进行配置。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "在 VLAN 间进行路由时，所有 VLAN 必须连接到同一物理交换机。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "路由器可以通过配置静态路由和动态路由来转发数据包。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "远程登录路由器时，不需要配置任何安全措施即可安全使用。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "路由器在进行 VLAN 间路由时，只能使用二层交换机。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "在路由器上启用远程访问必须配置合适的访问控制列表（ACL）。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "VLAN 间路由通常需要三层交换机或路由器来完成。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "在配置路由器时，能够通过启动配置模式来恢复设备的设置。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "路由器的基本配置完成后，必须执行 “write memory” 命令来保存配置。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "RIP（路由信息协议）是一种基于距离矢量的动态路由协议。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "OSPF（开放最短路径优先）是一种基于链路状态的路由协议。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "RIP 支持 IPv6 路由。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "在 OSPF 中，区域 0 是核心区域，所有其他区域必须与之相连接。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "访问控制列表（ACL）用于过滤路由器或交换机上的流量。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "IPv6 地址由 128 位二进制数构成，通常表示为 8 组 16 进制数。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "在 RIP 配置中，路由器自动将所有直接连接的网络加入到 RIP 进程中。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "配置 ACL 时，ACL 的作用序列是从下往上进行评估。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "OSPF 支持负载均衡，通过多路径来增强网络可靠性。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "在 IPv6 中，广播是被支持的，用于数据包的发送。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "NAT 用于将私有 IP 地址转换为公共 IP 地址，从而使多个设备能够共享一个公共地址。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "VPN 为远程用户提供了一个安全的通道来访问内部网络，通常使用加密来保护数据。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "PPP 协议是用于广域网（WAN）连接的链路层协议，支持多种网络层协议，包括 IPv4 和 IPv6。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "NAT 可以破坏某些协议的功能，因为它可能改变数据包中的地址信息。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "VPN 只使用 IPSec 作为加密协议，无法使用其他协议。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "PPP 认证可以使用 PAP（密码认证协议）和 CHAP（挑战握手认证协议）两种方式。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "使用 VPN 连接时，数据在互联网上传输时是以明文形式进行的，容易被窃听。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "NAT 主要用于局域网内的流量监控和管理。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "PPP 协议可以在串行连接和异步连接上使用。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "VPN 可以扩展企业的网络，将不同地点的用户通过公共网络连接为一个安全的整体。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "网络安全的目标是保护信息的机密性、完整性和可用性。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "网络攻击可以分为主动攻击和被动攻击，主动攻击旨在破坏或改变数据，而被动攻击只是在窃取信息。",
+					"answer": "正确",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "防火墙可以完全阻止所有类型的网络攻击。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "社会工程学攻击主要依赖于技术手段来获取敏感信息。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "使用默认密码是增强网络安全的一种有效策略。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				{
+					"type": "判断题",
+					"question": "入侵检测系统（IDS）只能发现外部攻击，无法监测内部威胁。",
+					"answer": "错",
+					"explanation": "无"
+				},
+				//简答题
+				{
+					type: '简答题',
+					question: '请简要说明网络管理的主要目标和挑战。',
+					answer: '网络管理的主要目标是确保网络的可用性、性能和安全性。主要挑战包括网络故障的快速识别与恢复、控制复杂的网络拓扑、管理不同类型的设备（如路由器、交换机）以及保障数据安全和隐私。',
+					explanation: '无'
+				},
+				{
+					type: '简答题',
+					question: '简述SNMP的工作原理及其应用场景。',
+					answer: 'SNMP（简单网络管理协议）通过管理信息库（MIB）来收集和管理网络设备的数据。它使用代理和管理站的结构，允许管理人员远程监控设备状态，如流量、CPU使用率等。常见应用场景包括数据中心的网络监控、故障检测和性能分析。',
+					explanation: '无'
+				},
+				{
+					type: '简答题',
+					question: '如何在虚拟机中安装操作系统？',
+					answer: '在虚拟机中安装操作系统的步骤通常包括：1) 使用虚拟化软件（如VMware或VirtualBox）创建新的虚拟机；2) 选择对应的操作系统安装介质（如ISO镜像文件）；3) 配置虚拟硬件（如内存、 CPU、硬盘等）；4) 启动虚拟机并按提示完成操作系统的安装。',
+					explanation: '无'
+				},
+				{
+					"type": "简答题",
+					"question": "请简要描述文件恢复的过程。",
+					"answer": "文件恢复的过程通常包括以下步骤：1) 确定丢失文件的类型和位置；2) 使用数据恢复软件扫描存储设备；3) 识别可恢复的文件；4) 选择需要恢复的文件并将其保存到其他安全的位置。注意，尽可能避免在原位置写入数据，以提高恢复成功率。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "简述文件加密的意义和常见算法。",
+					"answer": "文件加密的主要意义在于保护敏感数据，防止未授权访问和数据泄露。常见的加密算法包括 AES（高级加密标准）、RSA（非对称加密）和 DES（数据加密标准）。这些算法通过将原始数据转换为不可读的密文来实现数据安全。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "系统备份与恢复的重要性是什么？",
+					"answer": "系统备份与恢复的重要性在于，它能够防止数据丢失和系统崩溃带来的严重后果。定期备份可以确保在系统故障、数据损坏或网络攻击时迅速恢复，从而保护企业数据和业务连续性。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "简述域服务器的作用及其在网络中的重要性。",
+					"answer": "域服务器（或域控制器）的主要作用是管理和维护网络中的用户账户、计算机和其他资源。它提供用户身份验证及权限管理，确保只有授权用户可以访问特定资源。其在网络中的重要性在于安全性和管理效率，能够集中管理和监控整个网络，便于实施政策和配置。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "简述 VLAN 的工作原理及其应用场景。",
+					"answer": "VLAN（虚拟局域网）通过使用交换机将网络划分为多个逻辑子网，从而使不同 VLAN 之间的流量隔离，增强网络安全和管理效率。应用场景包括：大企业网络划分、部门间隔离、增强安全性、优化网络性能等。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "如何配置交换机上的链路聚合？",
+					"answer": "配置交换机上的链路聚合的步骤包括：1) 选择要聚合的端口；2) 进入全局配置模式；3) 创建聚合组并指定聚合模式（如 300 或 LACP）；4) 将所选端口添加到聚合组；5) 可选，配置负载均衡策略；6) 保存配置并检查聚合状态。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "简要说明如何配置路由器的基本设置。",
+					"answer": "连接到路由器，进入特权模式，执行 configure terminal，设置主机名 hostname，配置密码 enable secret，并为接口分配 IP 地址，最后保存配置。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "描述如何进行远程登录路由器。",
+					"answer": "使用 SSH 或 Telnet 协议，通过命令行输入路由器的 IP 地址，输入用户名和密码进行身份验证，以获得远程访问权限",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "配置 VLAN 的步骤是什么？",
+					"answer": "创建 VLAN（vlan [id]），命名 VLAN（可选），将接口分配到 VLAN（switchport access vlan [id]），并验证配置。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "RIP 的基本配置步骤是什么？",
+					"answer": "进入全局配置模式，使用 router rip 命令启用 RIP，添加网络（network [network_address]），并设置版本（version 2）。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "OSPF 的配置步骤是什么？",
+					"answer": "进入全局配置模式，使用 router ospf [process_id] 启用 OSPF，添加网络（network [ip_address] [wildcard_mask] area [area_id]）。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "NAT 的功能是什么？",
+					"answer": "NAT 将私有 IP 地址转换为公共 IP 地址，允许多个设备共享一个公共地址，同时增强网络的安全性。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "VPN 的基本好处是什么？",
+					"answer": "VPN 提供安全的数据传输，允许远程用户安全访问私有网络，并加密通信以保护用户隐私。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "PPP 认证的基本类型有哪些？",
+					"answer": "PPP 使用 PAP（密码认证协议）和 CHAP（挑战握手认证协议）进行用户身份验证，以确保连接安全。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "网络安全的基本原则是什么？",
+					"answer": "网络安全的基本原则包括机密性、完整性和可用性，确保只有授权用户能访问数据，同时防止数据被篡改。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "常见的网络攻击类型有哪些？",
+					"answer": "常见的网络攻击类型包括拒绝服务（DoS）、中间人攻击（MITM）、钓鱼攻击和恶意软件传播。",
+					"explanation": "无"
+				},
+				{
+					"type": "简答题",
+					"question": "网络防御的基本措施是什么？",
+					"answer": "网络防御的基本措施包括使用防火墙、入侵检测系统（IDS）、实施访问控制和定期更新系统补丁。",
+					"explanation": "无"
+				}
+			];
+
+			let currentQuestionIndex = 0;
+
+			function displayQuestion() {
+				const question = questions[currentQuestionIndex];
+				const questionContainer = document.getElementById('question-container');
+				let questionHtml =
+					`
+                <h2 class="text-xl font-semibold mb-3">${question.type}</h2>
+                <div class='question-section'>
+                    <p class='question'>问题：${question.question}</p>
+            `;
+
+				if (question.type === '单选题' || question.type === '多选题') {
+					const inputType = question.type === '单选题' ? 'radio' : 'checkbox';
+					questionHtml +=
+						`
+                    <div class='options'>
+                        ${question.options.map((option, index) => `
+                            <div class='option'>
+                                <input type='${inputType}' id='option-${index}' name='answer' value='${option[0]}'>
+                                <label for='option-${index}'>${option}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+				} else if (question.type === '判断题') {
+					questionHtml +=
+						`
+                    <div class='options'>
+                        <div class='option'>
+                            <input type='radio' id='option-true' name='answer' value='正确'>
+                            <label for='option-true'>对</label>
+                        </div>
+                        <div class='option'>
+                            <input type='radio' id='option-false' name='answer' value='错'>
+                            <label for='option-false'>错</label>
+                        </div>
+                    </div>
+                `;
+				} else if (question.type === '填空题') {
+					questionHtml +=
+						`
+                    <input type='text' id='answer-input' name='answer' placeholder='请输入答案'>
+                `;
+				} else if (question.type === '简答题') {
+					questionHtml +=
+						`
+                    <textarea id='answer-input' name='answer' rows='4' cols='50' placeholder='请输入答案'></textarea>
+                `;
+				}
+
+				questionHtml +=
+					`
+                    <button onclick='checkAnswer()'>提交答案</button>
+                </div>
+            `;
+
+				questionContainer.innerHTML = questionHtml;
+			}
+
+			function checkAnswer() {
+				const question = questions[currentQuestionIndex];
+				let userAnswer;
+
+				if (question.type === '单选题' || question.type === '多选题' || question.type === '判断题') {
+					const selectedOptions = document.querySelectorAll('input[name="answer"]:checked');
+					if (selectedOptions.length === 0) {
+						alert('请选择一个答案');
+						return;
+					}
+					userAnswer = Array.from(selectedOptions).map(option => option.value).sort().join('');
+				} else if (question.type === '填空题' || question.type === '简答题') {
+					const answerInput = document.getElementById('answer-input');
+					userAnswer = answerInput.value.trim();
+					if (userAnswer === '') {
+						alert('请输入答案');
+						return;
+					}
+				}
+
+				const resultDiv = document.createElement('div');
+				resultDiv.classList.add('result');
+
+				if (userAnswer === question.answer) {
+					resultDiv.classList.add('correct');
+					resultDiv.textContent = '回答正确！';
+					currentQuestionIndex++;
+					if (currentQuestionIndex < questions.length) {
+						setTimeout(displayQuestion, 1000);
+					} else {
+						resultDiv.textContent = '所有题目已完成！';
+					}
+				} else {
+					resultDiv.classList.add('wrong');
+					const answerText = document.createElement('span');
+					answerText.textContent = `回答错误，正确答案是 ${question.answer}`;
+					resultDiv.appendChild(answerText);
+					const explanationText = document.createElement('span');
+					explanationText.classList.add('explanation');
+					explanationText.textContent = `解析：${question.explanation}`;
+					resultDiv.appendChild(explanationText);
+					const nextButton = document.createElement('button');
+					nextButton.textContent = '跳转下一题';
+					nextButton.onclick = () => {
+						currentQuestionIndex++;
+						if (currentQuestionIndex < questions.length) {
+							displayQuestion();
+						} else {
+							resultDiv.textContent = '所有题目已完成！';
+						}
+					};
+					resultDiv.appendChild(nextButton);
+				}
+
+				const questionSection = document.querySelector('.question-section');
+				questionSection.appendChild(resultDiv);
+			}
+
+			displayQuestion();
+		</script>
+	</body>
+
+</html>

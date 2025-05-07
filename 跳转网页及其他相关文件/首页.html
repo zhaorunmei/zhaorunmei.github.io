@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://cdn.tailwindcss.com"></script>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+		<title>计算机网络管理课程</title>
+		<style>
+			/* 动画样式 */
+        .course-animation {
+            width: 100%;
+            height: 400px;
+            /* 增加高度 */
+            background: url('https://picsum.photos/1200/400') center/cover no-repeat;
+            animation: fadeIn 2s ease;
+            margin-bottom: 40px;
+            /* 增加底部间距 */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .course-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            /* 增加间距 */
+        }
+
+        .course-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            /* 增加圆角 */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            /* 增加阴影 */
+            transition: transform 0.3s ease;
+        }
+
+        .course-item:hover {
+            transform: scale(1.08);
+            /* 增加放大比例 */
+        }
+
+        .course-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .course-item h3 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            /* 增加背景不透明度 */
+            color: white;
+            margin: 0;
+            padding: 15px;
+            /* 增加内边距 */
+            text-align: center;
+            font-size: 1.1rem;
+            /* 增加字体大小 */
+        }
+
+        nav {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* 增加导航栏阴影 */
+        }
+
+        footer {
+            margin-top: 60px;
+            /* 增加页脚顶部间距 */
+        }
+
+        /* 聊天框样式 */
+        .chat-box {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .chat-input button {
+            padding: 8px 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* 新增标题和 logo 容器样式 */
+        .title-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 新增 logo 样式 */
+        .logo {
+            width: 220px; /* 可根据需要调整 logo 宽度 */
+            height: auto;
+            margin-left: 20px; /* 增加 logo 与标题的间距 */
+        }
+    </style>
+	</head>
+
+	<body class="bg-gray-100">
+		<!-- 导航条 -->
+		<nav class="bg-blue-600 p-6 shadow-md">
+			<!-- 增加内边距和阴影 -->
+			<div class="container mx-auto flex justify-between items-center">
+				<!-- 网站标志 -->
+				<a href="#" class="text-white text-3xl font-bold">计算机网络管理课程</a>
+				<!-- 增加字体大小 -->
+				<!-- 导航链接 -->
+				<ul class="flex space-x-6">
+					<!-- 增加间距 -->
+					<li><a href="#" class="text-white hover:text-gray-200">首页</a></li>
+					<li><a href="#PPT" class="text-white hover:text-gray-200">课程内容</a></li>
+					<li><a href="#weike" class="text-white hover:text-gray-200">微课视频</a></li>
+					<li><a href="#shitiku" class="text-white hover:text-gray-200">试题库</a></li>
+					<li><a href="#talk" class="text-white hover:text-gray-200">在线交流</a></li>
+				</ul>
+			</div>
+		</nav>
+		<!-- 课程标题和动画 -->
+		<div class="container mx-auto my-12">
+			<!-- 增加外边距 -->
+			<div class="title-logo-container">
+				<h1 class="text-5xl font-bold text-center mb-6">计算机网络管理课程</h1>
+				<!-- 增加字体大小和底部间距 -->
+				<img src="image/logo.png" class="logo" alt="Logo">
+			</div>
+			<div class="course-animation">
+				<!-- 移除原有的 logo 图片 -->
+			</div>
+		</div>
+		<!-- 各章主要内容 -->
+		<div class="container mx-auto my-12">
+			<!-- 增加外边距 -->
+			<h2 id="PPT" class="text-3xl font-bold mb-6">各章主要内容（PPT课件）</h2>
+			<!-- 增加字体大小和底部间距 -->
+			<div class="course-section">
+				<a href="PPT/01计算机网络管理简介.pptx" target="_blank" class="course-item">
+					<img src="image/PPT照片/1.png" alt="" href="PPT/01计算机网络管理简介.pptx">
+					<h3>计算机网络管理简介（目标、任务、标准、协议）</h3>
+				</a>
+				<a href="PPT/02系统安全.pptx" class="course-item">
+					<img src="image/PPT照片/2.png" alt="系统安全">
+					<h3>系统安全（win2003server中用户和组的设置、组策略的设置与应用）</h3>
+				</a>
+				<a href="PPT/03网络管理常用命令.pptx" class="course-item">
+					<img src="image/PPT照片/3.png" alt="网络管理常用命令">
+					<h3>网络管理常用命令（Ping、IPconfig、Tracert、netstat、nslookup、arp、route）</h3>
+				</a>
+				<a href="PPT/04数据备份与恢复.pptx" class="course-item">
+					<img src="image/PPT照片/4.png" alt="网络安全">
+					<h3>数据备份与恢复</h3>
+				</a>
+				<a href="PPT/05数据加密.pptx" class="course-item">
+					<img src="image/PPT照片/5.png" alt="网络安全">
+					<h3>数据加密</h3>
+				</a>
+				<a href="PPT/06数据扫描.pptx" class="course-item">
+					<img src="image/PPT照片/6.png" alt="网络安全">
+					<h3>数据扫描</h3>
+				</a>
+				<a href="PPT/07入侵检测.pptx" class="course-item">
+					<img src="image/PPT照片/7.png" alt="网络安全">
+					<h3>入侵检测</h3>
+				</a>
+				<a href="PPT/08防火墙.pptx" class="course-item">
+					<img src="image/PPT照片/8.png" alt="网络安全">
+					<h3>防火墙</h3>
+				</a>
+				<a href="PPT/09木马攻击.pptx" class="course-item">
+					<img src="image/PPT照片/9.png" alt="网络安全">
+					<h3>木马攻击</h3>
+				</a>
+				<a href="PPT/10交换机基本配置.pptx" class="course-item">
+					<img src="image/PPT照片/10.png" alt="网络设备管理">
+					<h3>交换机基本配置</h3>
+				</a>
+				<a href="PPT/11VLAN配置.pptx" class="course-item">
+					<img src="image/PPT照片/11.png" alt="网络设备管理">
+					<h3>VLAN配置</h3>
+				</a>
+				<a href="PPT/12路由器基本配置.pptx" class="course-item">
+					<img src="image/PPT照片/12.png" alt="网络设备管理">
+					<h3>路由器基本配置</h3>
+				</a>
+				<a href="#" class="course-item">
+					<img src="image/PPT照片/13.png" alt="网络设备管理">
+					<h3>单臂路由</h3>
+				</a>
+				<a href="PPT/14静态路由.pptx" class="course-item">
+					<img src="image/PPT照片/14.png" alt="网络设备管理">
+					<h3>静态路由</h3>
+				</a>
+				<a href="PPT/15动态路由.pptx" class="course-item">
+					<img src="image/PPT照片/15.png" alt="网络设备管理">
+					<h3>动态路由</h3>
+				</a>
+				<a href="#" class="course-item">
+					<img src="image/PPT照片/16.png" alt="Windows 2003服务器安装与设置">
+					<h3>Windows 2003服务器安装与设置(WEB、FTP、DNS、DHCP)</h3>
+				</a>
+				<a href="PPT/17拓扑图的绘制.pptx" class="course-item">
+					<img src="image/PPT照片/17.png" alt="拓扑图的绘制">
+					<h3>拓扑图的绘制（亿图或VISIO）</h3>
+				</a>
+			</div>
+		</div>
+		<!-- 各章微课 -->
+		<div class="container mx-auto my-12">
+			<!-- 增加外边距 -->
+			<h2 id="weike" class="text-3xl font-bold mb-6">各章微课（时长为6—8分钟）</h2>
+			<!-- 增加字体大小和底部间距 -->
+			<div class="course-section">
+				<a href="#" class="course-item">
+					<img src="image/微课照片/1.png" alt="计算机网络管理概述">
+					<h3>计算机网络管理概述（目标、任务、标准、协议）</h3>
+				</a>
+				<a href="#" class="course-item">
+					<img src="image/微课照片/2.png" alt="win2003server中组策略的设置与应用">
+					<h3>win2003server中组策略的设置与应用（要求有4种及以上应用）</h3>
+				</a>
+				<a href="#" class="course-item">
+					<img src="image/微课照片/3.png" alt="网络管理常用命令">
+					<h3>网络管理常用命令（6种及以上）</h3>
+				</a>
+				<a href="#" class="course-item">
+					<img src="image/微课照片/4.png" alt="网络安全">
+					<h3>系统备份与恢复(GHOST软件的应用)</h3>
+				</a>
+				<a href="#" class="course-item">
+					<img src="image/微课照片/5.png" alt="网络安全">
+					<h3>Nmap、Xscan的应用</h3>
+				</a>
+				<a href="#" class="course-item">
+					<img src="image/微课照片/6.png" alt="网络安全">
+					<h3>常用木马攻击</h3>
+				</a>
+				<a href="#" class="course-item">
+					<img src="image/微课照片/7.png" alt="网络安全">
+					<h3>交换机VLAN配置</h3>
+				</a>
+				<a href="#" class="course-item">
+					<img src="image/微课照片/8.png" alt="网络安全">
+					<h3>静态路由配置</h3>
+				</a>
+				<a href="#" class="course-item">
+					<img src="image/微课照片/9.png" alt="网络安全">
+					<h3>动态路由配置</h3>
+				</a>
+			</div>
+		</div>
+		<!-- 练习题盒子 -->
+		<div class="container mx-auto my-12">
+			<!-- 增加外边距 -->
+			<h2 id="shitiku" class="text-3xl font-bold mb-6">试题库</h2>
+			<!-- 增加字体大小和底部间距 -->
+			<div class="course-section">
+				<a href="试题库--题库版.html" class="course-item">
+					<img src="image/练习题照片/1.png" alt="">
+					<h3>试题库--题库版</h3>
+				</a>
+				<a href="试题库--练习版.html" class="course-item">
+					<img src="image/练习题照片/2.png" alt="">
+					<h3>试题库--练习版</h3>
+				</a>
+				<div></div>
+			</div>
+		</div>
+		<!-- 在线交流功能 -->
+		<div class="container mx-auto my-12">
+			<h2 id="talk" class="text-3xl font-bold mb-6">在线交流</h2>
+			<div class="chat-box" id="chatBox"></div>
+			<div class="chat-input">
+				<input type="text" id="chatInput" placeholder="输入消息">
+				<button onclick="sendMessage()">发送</button>
+			</div>
+		</div>
+		<!-- 页脚 -->
+		<footer class="bg-gray-800 text-white text-center p-6">
+			<!-- 增加内边距 -->
+			<p>&copy; 2025 计算机网络管理课程. 保留所有权利.</p>
+			<div class="mt-3">
+				<a href="#" class="text-gray-400 hover:text-white mx-2">关于我们</a>
+				<a href="#" class="text-gray-400 hover:text-white mx-2">联系我们</a>
+			</div>
+		</footer>
+		<script>
+			function sendMessage() {
+				const chatInput = document.getElementById('chatInput');
+				const chatBox = document.getElementById('chatBox');
+				const message = chatInput.value;
+
+				if (message.trim() !== '') {
+					const newMessage = document.createElement('p');
+					newMessage.textContent = message;
+					chatBox.appendChild(newMessage);
+					chatInput.value = '';
+				}
+			}
+		</script>
+	</body>
+
+</html>
